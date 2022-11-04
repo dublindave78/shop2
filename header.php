@@ -2,7 +2,7 @@
 <?php
 ob_start();
 session_start();
-include("admin/inc/config.php");
+include("put/it/somewhere/config.php");
 include("admin/inc/functions.php");
 include("admin/inc/CSRF_Protect.php");
 $csrf = new CSRF_Protect();
@@ -54,7 +54,7 @@ foreach ($result as $row) {
 		$statement1->execute(array($row['payment_id']));
 		$result1 = $statement1->fetchAll(PDO::FETCH_ASSOC);
 		foreach ($result1 as $row1) {
-			$statement2 = $pdo->prepare("SELECT * FROM tbl_product WHERE p_id=?");
+			$statement2 = $pdo->prepare("SELECT * FROM tbl_products WHERE p_id=?");
 			$statement2->execute(array($row1['product_id']));
 			$result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);							
 			foreach ($result2 as $row2) {
@@ -62,7 +62,7 @@ foreach ($result as $row) {
 			}
 			$final = $p_qty+$row1['quantity'];
 
-			$statement = $pdo->prepare("UPDATE tbl_product SET p_qty=? WHERE p_id=?");
+			$statement = $pdo->prepare("UPDATE tbl_products SET p_qty=? WHERE p_id=?");
 			$statement->execute(array($final,$row1['product_id']));
 		}
 		
@@ -78,7 +78,7 @@ foreach ($result as $row) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+	<title>Catchy Something</title>
 	<!-- Meta Tags -->
 	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -161,7 +161,7 @@ foreach ($result as $row) {
 	}
 	if($cur_page == 'product.php')
 	{
-		$statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_id=?");
+		$statement = $pdo->prepare("SELECT * FROM tbl_products WHERE p_id=?");
 		$statement->execute(array($_REQUEST['id']));
 		$result = $statement->fetchAll(PDO::FETCH_ASSOC);							
 		foreach ($result as $row) 
@@ -223,7 +223,7 @@ foreach ($result as $row) {
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="<?php echo BASE_URL.$og_slug; ?>">
 		<meta property="og:description" content="<?php echo $og_description; ?>">
-		<meta property="og:image" content="assets/uploads/<?php echo $og_photo; ?>">
+		<meta property="og:image" content="assets/uploads/product_photos/<?php echo $og_photo; ?>">
 	<?php endif; ?>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
